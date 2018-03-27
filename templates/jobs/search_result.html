@@ -1,0 +1,93 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<style>
+.button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.button2 {
+    background-color: white;
+    color: black;
+    border: 2px solid #008CBA;
+}
+body
+{
+ margin-top:0px;
+ margin-left:10px;
+ margin-right:10px;
+
+}
+
+table, td, th {
+    border: 1px solid black;
+}
+
+table {
+    border-collapse: collapse;
+    width: 80%;
+}
+
+th {
+    height: 200px;
+	background-color: #4CAF90;
+    color: white;
+}
+tr {
+	height: 40px;
+   }
+td {
+	height:800px;
+
+    }
+
+</style>
+</head>
+{% include "jobs/base1.html" %}
+<body>
+<div class="container">
+    <p>Hai</p>
+    <form action="/join/" method="get">
+
+
+    {% if jobs %}
+    <p><b>Found {{ jobs|length }} job{{ jobs|pluralize }}.</b></p>
+            <ul>
+                {% for jobtype, desc, description, requirements, location in jobs %}
+                <p>you searched for job <b>{{ jobtype }}</b></p>
+                <li><p><b><font size="4" face="verdana" color="green">{{ jobtype }} </font></b></p></li>
+                <p><b> <font size="2" face="verdana" color="blue">Job Description </font></b></p>
+                <font size="2" face="verdana" color="black">{{ desc }}</font>
+                <p ><b> <font size="2" face="verdana" color="blue">Description </font></b></p>
+                <p align="justify"> <font size="2" face="verdana" color="black">{{ description }}</font></p>
+                <p><b> <font size="2" face="verdana" color="blue">Requirements</font></b></p>
+                <p align="justify"> <font size="2" face="verdana" color="black"> {{ requirements }} </font></p>
+                <p><b> <font size="2" face="verdana" color="blue">Location</font></b></p>
+                <font size="2" face="verdana" color="black">{{ location }}</font><br><br><br>
+                <button class="button button2">
+                <input type="submit" name="Apply" value="Apply This Job" ></button>
+                <br><br><br>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No jobs matched your search criteria.</p>
+        {% endif %}
+
+</form>
+    </div>
+
+</body>
+</html>
+

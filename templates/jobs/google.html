@@ -1,0 +1,214 @@
+<!--<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<title>Google Drive File Picker Example</title>
+</head>
+<body>
+	<button type="button" id="pick" >Pick File</button>
+
+	<script src="jobs/filepicker.js"></script>
+	<script>
+		function initPicker() {
+			var picker = new FilePicker({
+				apiKey: 'AIzaSyBjR1ikrivZ7LtkBlAXuE88i3nz91ckflo',
+				clientId: '159035292865-5cs30rdfuas811mtb16avv6h2pdl8j2t',
+				buttonEl: document.getElementById('pick'),
+				onSelect: function(file) {
+					console.log(file);
+					alert('Selected ' + file.title);
+				}
+			});
+		}
+	</script>
+
+	<script src="https://www.google.com/jsapi?key=AIzaSyBjR1ikrivZ7LtkBlAXuE88i3nz91ckflo"></script>
+	<script src="https://apis.google.com/js/client.js?onload=initPicker"></script>
+</body>
+</html>-->
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <title>Google Picker Example</title>
+
+    <script type="text/javascript">
+
+      // The Browser API key obtained from the Google API Console.
+      var developerKey = 'AIzaSyBjR1ikrivZ7LtkBlAXuE88i3nz91ckflo';
+
+      // The Client ID obtained from the Google API Console. Replace with your own Client ID.
+      var clientId = '159035292865-noc16a0521ahcrng1c6o7b97f5fat6pc.apps.googleusercontent.com';
+
+      // Scope to use to access user's photos.
+      var scope = 'https://www.googleapis.com/auth/drive';
+
+      var pickerApiLoaded = false;
+      var oauthToken;
+
+      // Use the API Loader script to load google.picker and gapi.auth.
+      function onApiLoad() {
+        gapi.load('auth2', onAuthApiLoad);
+        gapi.load('picker', onPickerApiLoad);
+      }
+
+      function onAuthApiLoad() {
+        var authBtn = document.getElementById('auth');
+        authBtn.disabled = false;
+        authBtn.addEventListener('click', function() {
+          gapi.auth2.authorize({
+            client_id: clientId,
+            scope: scope
+          }, handleAuthResult);
+        });
+      }
+
+      function onPickerApiLoad() {
+        pickerApiLoaded = true;
+        createPicker();
+      }
+
+      function handleAuthResult(authResult) {
+        if (authResult && !authResult.error) {
+          oauthToken = authResult.access_token;
+          createPicker();
+        }
+      }
+
+      // Create and render a Picker object for picking user Photos.
+      function createPicker() {
+        if (pickerApiLoaded && oauthToken) {
+          var picker = new google.picker.PickerBuilder().
+              addView(google.picker.ViewId.DOCS).
+              setOAuthToken(oauthToken).
+              setDeveloperKey(developerKey).
+              setCallback(pickerCallback).
+              build();
+          picker.setVisible(true);
+
+
+        }
+      }
+
+      // A simple callback implementation.
+      function pickerCallback(data) {
+        var url = 'nothing';
+        if (data[google.picker.Response.ACTION] == google.picker.Action.PICKED) {
+          var doc = data[google.picker.Response.DOCUMENTS][0];
+          url = doc[google.picker.Document.URL];
+        }
+        var message = 'You picked: ' + url;
+        document.getElementById('result').innerHTML = message;
+      }
+    </script>
+  </head>
+  <body>
+    <button type="button" id="auth" disabled>Authenticate</button>
+
+    <div id="result"></div>
+
+    <!-- The Google API Loader script. -->
+  <script type="text/javascript" src="https://apis.google.com/js/api.js?onload=onApiLoad"></script>
+  </body>
+</html>
+
+<!--
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <title>Google Picker Example</title>
+
+    <script type="text/javascript">
+
+
+    var developerKey = 'AIzaSyBjR1ikrivZ7LtkBlAXuE88i3nz91ckflo';
+
+
+    var clientId = "159035292865-noc16a0521ahcrng1c6o7b97f5fat6pc.apps.googleusercontent.com"
+
+
+    var appId = "159035292865";
+
+
+    var scope = ['https://www.googleapis.com/auth/drive'];
+
+    var pickerApiLoaded = false;
+    var oauthToken;
+
+
+    function loadPicker() {
+      gapi.load('auth', {'callback': onAuthApiLoad});
+      gapi.load('picker', {'callback': onPickerApiLoad});
+    }
+
+    function onAuthApiLoad() {
+      window.gapi.auth.authorize(
+          {
+            'client_id': clientId,
+            'scope': scope,
+            'immediate': false
+          },
+          handleAuthResult);
+    }
+
+    function onPickerApiLoad() {
+      pickerApiLoaded = true;
+      createPicker();
+    }
+
+    function handleAuthResult(authResult) {
+      if (authResult && !authResult.error) {
+        oauthToken = authResult.access_token;
+        createPicker();
+      }
+    }
+
+
+    function createPicker() {
+      if (pickerApiLoaded && oauthToken) {
+        var view = new google.picker.View(google.picker.ViewId.DOCS);
+        //view.setMimeTypes("image/png,image/jpeg,image/jpg");
+        //view.setMimeTypes("docs/doc,docs/docx,docs/pdf");
+        var picker = new google.picker.PickerBuilder()
+            .enableFeature(google.picker.Feature.NAV_HIDDEN)
+            .enableFeature(google.picker.Feature.MULTISELECT_ENABLED)
+            .setAppId(appId)
+            .setOAuthToken(oauthToken)
+            .addView(view)
+            .addView(new google.picker.DocsUploadView())
+            .setDeveloperKey(developerKey)
+            .setCallback(pickerCallback)
+            .build();
+         picker.setVisible(true);
+      }
+    }
+
+
+    function pickerCallback(data) {
+      if (data.action == google.picker.Action.PICKED) {
+        var fileId = data.docs[0].id;
+        var fileName=data.docs[0].name;
+        alert('The user selected: ' + fileName);
+        var message = 'You picked: ' + filename;
+        document.getElementById('result').innerHTML = message;
+      }
+    }
+    </script>
+  </head>
+  <body>
+  <button type="button" id="auth" disabled>Authenticate</button>
+    <div id="result"></div>
+
+    <!-- The Google API Loader script. -->
+  <!--<script type="text/javascript" src="https://apis.google.com/js/api.js?onload=loadPicker"></script>
+  </body>
+</html>-->
+
+
+
+

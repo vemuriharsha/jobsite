@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<p>Welcome</p>
+<form action="/home2/" method="get">
+
+{% if data %}
+
+        {{ firstName}}
+
+      <a href="/logout">Logout</a>
+
+{% else %}
+            <p>No jobs matched your search criteria.</p>
+{% endif %}
+    <input type="submit" name="submit">
+</form>
+</body>
+</html>

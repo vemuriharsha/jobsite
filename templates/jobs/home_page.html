@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search</title>
+
+
+</head>
+
+{% include "jobs/base1.html" %}
+<body>
+
+<table align="center">
+<tr>
+
+    <td >
+    <p align="center"><b>Choose the value you want and click <em>Search</em>.</b></p>
+        {% if error %}
+            <p style="color: red;">Please submit a search term.</p>
+        {% endif %}
+
+
+        <form action="/search/" method="get">
+            {% if error %}
+                 <p style="color: red;" align="center">Please submit a search term.</p>
+            {% endif %}
+            <p align="center">
+                <select name = "sample" style="width: 250px;height:40px" title="option1">
+                    <option value="" selected disabled hidden>Choose here</option>
+                    <option>Human Resource</option>
+                    <option>Software Engineer</option>
+                    <option>ITES</option>
+                    <option>Data Analyst</option>
+                </select>
+
+           <input type="submit" value="Find Job" style="width:250px;height:40px;color:white;background-color:#2F4F4F"></p>
+        </form>
+
+    </td>
+</tr>
+
+</table>
+
+<script type="in/Login"></script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Contact us</title>
+</head>
+<body>
+
+<div id="fb-root"></div>
+
+    <p>Enter your email:</p>
+
+    {% if form.errors %}
+        <p style="color: red;">
+            Please correct the error{{ form.errors|pluralize }} below.
+        </p>
+    {% endif %}
+
+    <form action="" method="post" oninvalid="error" >
+        <table>
+           {{ form.as_table }}
+        </table>
+        {% csrf_token %}
+        <input type="submit" value="Submit">
+    </form>
+
+</body>
+</html>

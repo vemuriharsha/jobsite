@@ -1,0 +1,132 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <script>
+        function validate()
+        {
+
+    var fileInput = document.getElementById('file');
+
+    var filePath = fileInput.value;
+    var allowedExtensions = /(\.doc|\.docx|\.pdf)$/i;
+    if(!allowedExtensions.exec(filePath)){
+        alert('Please upload file having extensions .doc/.docx/.pdf/ only.');
+        fileInput.value = '';
+        return false;
+    }else{
+        //Image preview
+        if (fileInput.files && fileInput.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('imagePreview').innerHTML = '<img src="'+e.target.result+'"/>';
+            };
+            reader.readAsDataURL(fileInput.files[0]);
+        }
+    }
+}
+
+
+    </script>
+    <style type="text/css">
+
+
+
+
+</style>
+</head>
+{% include "jobs/base1.html" %}
+<body>
+<div class="container" >
+<p style="font-size:15pt">Candidate Profile</p>
+     <font face="verdana"> <p style="font-size:15pt"><u>Recruitment Privacy Statement:</u></p>
+
+         <p style="font-size:10pt"><b>Please complete the acknowledgement question here</b></p>
+
+       <p style="font-size:10pt">By selecting 'I confirm all information provided is accurate' below, I acknowledge that I have
+           read the Privacy Policy and <br>Terms and understand how my personal data will be used and give permission to use the
+           personal data that I submit to<br> the recruitment system for the above purposes. I also confirm that the information that
+           I submit is accurate and complete<br> to the best of my knowledge.</p></font><br>
+
+    <p style="font-size=10pt">A field marked with * indicates that the information is required.</p><br>
+
+
+    <p style="font-size:10pt">Connect your account</p>
+    <form action="/store/" method="get">
+        <div><a href="{% url 'social:begin' backend='linkedin-oauth2' %}" name="Login">Login with Linkedin</a></div>
+
+        <p style="font-size:15pt">Acknowledgement of Recruitment Privacy Statement</p>
+        <p style="font-size:10pt">Candidate Sign-off on Information Provided</p>
+        <select name = "sample" style="width: 500px;height:30px" title="option1">
+        <option value="" selected disabled hidden>Make a Selection</option>
+        <option>I confirm all information provided is accurate</option>
+        </select>
+
+        <p style="font-size:15pt">Resume</p>
+        <ul>Provide your resume below to pre-fill your profile. Existing data in the form will be replaced:</ul>
+        Please upload your resume (Max size: 5 MB)</p>
+
+        <input type="file" name="resume" id="file"  accept=".doc,.docx,.pdf" onchange="validate()" required></b><sub>(.doc,.docx,.pdf)</sub>
+        <br><br>
+        <p style="font-size:15pt">Enter Your Information</p>
+        {% if data %}
+         First Name *:
+               <div> <input type="text" name="fname" value='{{ data.first_name }}' required style="height:30px;width:400px;" pattern="[a-z,A-Z]{1,35}" a title="first name should be either upper or lower case characters" placeholder="characters from A-Z/a-z"></div>
+           <span class="validity"></span><br>
+
+         Last Name *:
+               <div>   <input type="text" name="lname" value='{{ data.last_name }}' required style="height:30px;width:400px;" pattern="[a-z]{1,35}" title="last name should be either upper or lowercase characters" placeholder="characters from A-Z/a-z"></div>
+            <span class="validity"></span><br>
+
+        Headline *:
+               <div>   <input type="text" name="headline" value='{{ data.headline }}' required style="height:30px;width:400px;" pattern="[a-z,A-Z,' ']{1,35}" title="Headline should be either upper or lowercase characters" placeholder="characters from A-Z/a-z"></div>
+            <span class="validity"></span><br>
+
+        Industry *:
+               <div>   <input type="text" name="industry" value='{{ data.industry }}' required style="height:30px;width:400px;" pattern="[a-z,A-Z,' ']{1,35}" title="Industry should be either upper or lowercase characters" placeholder="characters from A-Z/a-z"></div>
+            <span class="validity"></span><br>
+
+        Mobile *:
+               <div><input type="tel" name="mob" size="10" required style="height:30px;width:400px;" maxlength="10" pattern="[1-9]{1}[0-9]{9}" title="Mobile no should be exactly 10 digits" placeholder="numbers 0 -9 maximun of 10"></div>
+               <span class="validity"></span><br>
+
+        <p style="font-size:15pt">Address1</p>
+
+        City *:
+               <div>   <input type="text" name="city" value='{{ data.location.name }}' required style="height:30px;width:400px;" pattern="[a-z,A-Z,' ']{1,35}" title="City should be either upper or lowercase characters" placeholder="characters from A-Z/a-z"></div>
+            <span class="validity"></span><br>
+
+        Zipcode *:
+               <div>   <input type="number" name="zip"  style="height:30px;width:400px;" pattern="[a-z]{1,35}" title="last name should be either upper or lowercase characters" placeholder="characters from A-Z/a-z"></div>
+            <span class="validity"></span><br>
+
+        Country *:
+               <div>   <input type="text" name="country" value='{{ data.location.country.code }}' required style="height:30px;width:400px;" pattern="[a-z,A-Z]{1,35}" title="last name should be either upper or lowercase characters" placeholder="characters from A-Z/a-z"></div>
+            <span class="validity"></span><br>
+        {% endif %}
+
+        State/Province *:
+               <div>   <input type="text" name="statepro" style="height:30px;width:400px;" pattern="[a-z,A-Z,' ']{1,35}" title="last name should be either upper or lowercase characters" placeholder="characters from A-Z/a-z"></div>
+            <span class="validity"></span><br>
+
+        E-Mail *:
+            <div><input type="email" name="email" value= '{{ data.emailAddress }}' required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"  style="height:30px;width:400px;"></div>
+
+        <br>
+        <input type="submit" value="Apply" name="Apply" style="width:20%;height:30px;color:white;background-color:#2F4F4F" ></td>
+
+        <img src="C:\Users\harshavardhan.vemuri\Desktop\linkedin.jpg" >
+    </form>
+
+ </div>
+</body>
+
+</html>
+

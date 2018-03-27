@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Boards</title>
+  </head>
+  <body>
+    <h3>Boards</h3>
+    <table border="1">
+        <tr>
+            <th>Board</th>
+            <th>Post</th>
+            <th>Topics</th>
+            <th>Last Post</th>
+        </tr>
+    <tbody>
+
+    {% for board in boards %}
+    <tr><td>
+      {{ board.name }} <br>
+        </td>
+    <td></td>
+    <td></td>
+    <td></td></tr>
+    {% endfor %}
+        </tbody>
+</table>
+  </body>
+</html>
